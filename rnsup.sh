@@ -32,6 +32,7 @@ VERSION="v0.1.0"
 RNSUP_INSTALL_CMD="sudo bash -c \"\$(curl  -sLSf https://paul.lc/rnsup.sh)\""
 RNSUP_DIR="/opt/rnsup.sh"
 RNSUP_LOG_FILE="/tmp/rnsup.sh-$(date +%Y%m%d-%H%M%S).log"
+DEPENDENCIES="curl pip3"
 
 ################################################################
 # Functions                                                    #
@@ -65,6 +66,18 @@ detect_pipe() {
         echo -e "${ErrBullet}This script can't be piped! Instead, use the command: ${RNSUP_INSTALL_CMD}${Off}"
         exit 1
     fi
+    echo -e "${Ok}"
+}
+
+check_deps() {
+    echo -ne "${OkBullet}Checking and installing dependencies... ${Off}"
+    # shellcheck disable=SC2068
+    for pkg in ${DEPENDENCIES[@]}; do
+        if ! command -v "${pkg}" >>"${XMRSH_LOG_FILE}" 2>&1; then
+            install_pkg "${pkg}"
+            check_return $?
+        fi
+    done
     echo -e "${Ok}"
 }
 
