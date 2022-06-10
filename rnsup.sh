@@ -81,6 +81,19 @@ check_deps() {
     echo -e "${Ok}"
 }
 
+install_pkg() {
+    # This detects both ubuntu and debian
+    if grep -q "debian" /etc/os-release; then
+        apt-get update >>"${RNSUP_LOG_FILE}" 2>&1
+        apt-get install -y "$1" >>"${RNSUP_LOG_FILE}" 2>&1
+    elif grep -q "fedora" /etc/os-release || grep -q "centos" /etc/os-release; then
+        dnf install -y "$1" >>"${RNSUP_LOG_FILE}" 2>&1
+    else
+        echo -e "${ErrBullet}Cannot detect your distribution package manager.${Off}"
+        exit 1
+    fi
+}
+
 detect_pip3() {
     echo -ne "${OkBullet}Checking pip3... ${Off}"
     if pip3 --version >>"${RNSUP_LOG_FILE}" 2>&1; then
