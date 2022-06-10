@@ -69,6 +69,14 @@ detect_pipe() {
     echo -e "${Ok}"
 }
 
+check_return() {
+    if [ "$1" -ne 0 ]; then
+        echo -e "${Fail}"
+        echo -e "${ErrBullet}Installation failed. Check the logs in ${RNSUP_LOG_FILE}${Off}"
+        exit "$1"
+    fi
+}
+
 check_deps() {
     echo -ne "${OkBullet}Checking and installing dependencies... ${Off}"
     # shellcheck disable=SC2068
