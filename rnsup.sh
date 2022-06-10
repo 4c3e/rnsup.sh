@@ -73,7 +73,7 @@ check_deps() {
     echo -ne "${OkBullet}Checking and installing dependencies... ${Off}"
     # shellcheck disable=SC2068
     for pkg in ${DEPENDENCIES[@]}; do
-        if ! command -v "${pkg}" >>"${XMRSH_LOG_FILE}" 2>&1; then
+        if ! command -v "${pkg}" >>"${RNSUP_LOG_FILE}" 2>&1; then
             install_pkg "${pkg}"
             check_return $?
         fi
