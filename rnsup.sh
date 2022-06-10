@@ -194,6 +194,7 @@ detect_i2pd() {
 header
 detect_root
 detect_pipe
+check_deps
 detect_pip3
 detect_rnsd
 detect_i2pd
