@@ -32,7 +32,7 @@ VERSION="v0.1.0"
 RNSUP_INSTALL_CMD="sudo bash -c \"\$(curl  -sLSf https://paul.lc/rnsup.sh)\""
 RNSUP_DIR="/opt/rnsup.sh"
 RNSUP_LOG_FILE="/tmp/rnsup.sh-$(date +%Y%m%d-%H%M%S).log"
-DEPENDENCIES="curl pip3"
+DEPENDENCIES="curl python3-pip"
 
 ################################################################
 # Functions                                                    #
