@@ -113,13 +113,24 @@ detect_pip3() {
     fi
 }
 
-detect_rnsd() {
-    echo -ne "${OkBullet}Checking rnsd... ${Off}"
-    if rnsd --version >>"${RNSUP_LOG_FILE}" 2>&1; then
+install_rnsd() {
+    echo -ne "${OkBullet}Installing rnsd... ${Off}"
+    if pip3 install rnsd >>"${RNSUP_LOG_FILE}" 2>&1; then
         echo -e "${Ok}"
     else
         echo -e "${Nok}"
-        echo -e "TODODODODODO"
+        echo -e "${ErrBullet}Error installing rnsd${Off}"
+        exit 1
+    fi
+}
+
+install_nomadnet() {
+    echo -ne "${OkBullet}Installing nomadnet... ${Off}"
+    if pip3 install nomadnet >>"${RNSUP_LOG_FILE}" 2>&1; then
+        echo -e "${Ok}"
+    else
+        echo -e "${Nok}"
+        echo -e "${ErrBullet}Error installing nomadnet${Off}"
         exit 1
     fi
 }
@@ -203,4 +214,6 @@ detect_root
 detect_pipe
 check_deps
 detect_pip3
+install_rnsd
+install_nomadnet
 detect_i2pd
