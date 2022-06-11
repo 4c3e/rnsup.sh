@@ -170,17 +170,15 @@ install_i2pd() {
             ;;
         esac
         if [[ -z $RELEASE ]]; then
-            echo "Couldn't detect your system release. Please report issue to me by writing to email: 'r4sas <at> i2pd.xyz'"
+            echo "Couldn't detect your system release. Please report issue at github.com/4c3e/rnsup.sh'"
             exit 1
         fi
     }
 
     get_release
 
-    echo "Importing signing key"
     wget -q -O - https://repo.i2pd.xyz/r4sas.gpg | apt-key --keyring /etc/apt/trusted.gpg.d/i2pd.gpg add -
 
-    echo "Adding APT repository"
     echo "deb https://repo.i2pd.xyz/$DIST $RELEASE main" > /etc/apt/sources.list.d/i2pd.list
     echo "deb-src https://repo.i2pd.xyz/$DIST $RELEASE main" >> /etc/apt/sources.list.d/i2pd.list
     apt-get update
@@ -193,8 +191,9 @@ detect_i2pd() {
         echo -e "${Ok}"
     else
         echo -e "${Nok}"
-        install_i2pd
-        exit 1
+        echo -ne "${OkBullet}Installing i2pd... ${Off}"
+        install_i2pd >>"${RNSUP_LOG_FILE}"
+        echo -e "${Ok}"
     fi
 }
 
