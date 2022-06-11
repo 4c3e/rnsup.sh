@@ -115,7 +115,7 @@ detect_pip3() {
 
 install_rnsd() {
     echo -ne "${OkBullet}Installing rnsd... ${Off}"
-    if pip3 install rnsd >>"${RNSUP_LOG_FILE}" 2>&1; then
+    if pip3 install rns >>"${RNSUP_LOG_FILE}" 2>&1; then
         echo -e "${Ok}"
     else
         echo -e "${Nok}"
