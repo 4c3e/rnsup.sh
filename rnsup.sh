@@ -137,6 +137,39 @@ install_nomadnet() {
     fi
 }
 
+install_rnodeconf() {
+    echo -ne "${OkBullet}Installing rnodeconf... ${Off}"
+    if pip3 install rodeconf >>"${RNSUP_LOG_FILE}" 2>&1; then
+        echo -e "${Ok}"
+    else
+        echo -e "${Nok}"
+        echo -e "${ErrBullet}Error installing rnodeconf${Off}"
+        exit 1
+    fi
+}
+
+query_rnodeconf() {
+        while true; do
+		read -r -e -p "   Would you like to configure a LoRa hardware device for use with rns? [y/n]: " yn
+            case $yn in
+            [Yy]*)
+		install_rnodeconf
+		rnodeconf -a
+                break
+                ;;
+            [Nn]*) break ;;
+            *) echo "   Please answer yes or no." ;;
+            esac
+        done
+
+}
+
+configure_i2ptransport() {
+    read -r -e -p "   Enter I2PTransport Name: " i2ptitlename
+    read -r -e -p "   Enter I2PTransport Peers (comma seperated): " i2ppeerlist
+    echo -e "[[$i2ptitlename]]\n  type = I2PInterface\n  interface_enabled = yes\n  peers = $i2ppeerlist" >> $RNS_CONF
+}
+
 add_transport() {
     echo -e "${OkBullet}Select a transport to add, or exit:"
     PS3=":: Enter a number: "
@@ -165,8 +198,9 @@ add_transport() {
             break
             ;;
         "LoRa")
-            echo "hello lora"
+	    query_rnodeconf
             add_transport
+	    configure_loratransport
             break
             ;;
         "Exit")
@@ -270,12 +304,6 @@ install_i2pd() {
     apt-get install -y i2pd
 }
 
-configure_i2ptransport() {
-    read -r -e -p "   Enter I2PTransport Name: " i2ptitlename
-    read -r -e -p "   Enter I2PTransport Peers (comma seperated): " i2ppeerlist
-    echo -e "[[$i2ptitlename]]\n  type = I2PInterface\n  interface_enabled = yes\n  peers = $i2ppeerlist" >> $RNS_CONF
-}
-
 detect_i2pd() {
     echo -ne "${OkBullet}Checking i2pd... ${Off}"
     if i2pd --version >>"${RNSUP_LOG_FILE}" 2>&1; then
@@ -287,6 +315,13 @@ detect_i2pd() {
         echo -e "${Ok}"
     fi
 }
+
+configure_i2ptransport() {
+    read -r -e -p "   Enter I2PTransport Name: " i2ptitlename
+    read -r -e -p "   Enter I2PTransport Peers (comma seperated): " i2ppeerlist
+    echo -e "[[$i2ptitlename]]\n  type = I2PInterface\n  interface_enabled = yes\n  peers = $i2ppeerlist" >> $RNS_CONF
+}
+
 
 
 
