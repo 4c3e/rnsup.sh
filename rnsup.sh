@@ -166,7 +166,7 @@ configure_rns() {
 }
 
 configure_nomadnet() {
-
+    echo -e "${OkBullet}Configuring nomadnet... (sike)"
 }
 
 install_i2pd() {
