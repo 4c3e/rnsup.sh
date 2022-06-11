@@ -184,7 +184,7 @@ configure_rns() {
         echo -e "${OkBullet}Generating rns config file..."
         ENABLE_TRANSPORT=no
         while true; do
-            read -r -e -p "   Do you want to enable transport to route packets for other nodes on the network? [y/n]: " yn
+            read -r -e -p "   Enable transport (route packets for others on the network)? [y/n]: " yn
             case $yn in
             [Yy]*)
                 ENABLE_TRANSPORT=yes
@@ -282,7 +282,7 @@ detect_i2pd() {
         echo -e "${Ok}"
     else
         echo -e "${Nok}"
-        echo -ne "${OkBullet}Installing i2pd... ${Off}"
+        echo -ne "${OkBullet}Installing i2pd... "
         install_i2pd >>"${RNSUP_LOG_FILE}"
         echo -e "${Ok}"
     fi
