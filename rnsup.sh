@@ -136,7 +136,7 @@ install_nomadnet() {
 }
 
 configure_rns() {
-    if [ -f "~/.reticulum/config"]; then
+    if [ -f "~/.reticulum/config" ]; then
         echo -e "${OkBullet}Using existing rns config file${Off}"
     else
         echo -e "${OkBullet}Generating rns config file...${Off}"
