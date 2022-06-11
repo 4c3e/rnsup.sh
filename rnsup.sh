@@ -142,22 +142,31 @@ configure_rns() {
     select opt in "${options[@]}"; do
         case $opt in
         "Default")
+            echo "hello default"
+            configure_rns
             break
             ;;
         "TCP")
-            echo "hello sir"
+            echo "hello tcp"
+            configure_rns
             break
             ;;
         "UDP")
             echo "hello udp"
+            configure_rns
             break
             ;;
         "I2P")
             echo "hello i2p"
+            configure_rns
             break
             ;;
         "LoRa")
             echo "hello lora"
+            configure_rns
+            break
+            ;;
+        "Exit")
             break
             ;;
         *) echo "Invalid choice!" ;;
