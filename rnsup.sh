@@ -32,7 +32,7 @@ VERSION="v0.1.0"
 RNSUP_INSTALL_CMD="sudo bash -c \"\$(curl  -sLSf https://paul.lc/rnsup.sh)\""
 RNSUP_DIR="/opt/rnsup.sh"
 RNSUP_LOG_FILE="/tmp/rnsup.sh-$(date +%Y%m%d-%H%M%S).log"
-DEPENDENCIES="curl python3-pip"
+DEPENDENCIES="python3-pip"
 
 ################################################################
 # Functions                                                    #
@@ -113,7 +113,7 @@ detect_pip3() {
     fi
 }
 
-install_rnsd() {
+install_rns() {
     echo -ne "${OkBullet}Installing rnsd... ${Off}"
     if pip3 install rns >>"${RNSUP_LOG_FILE}" 2>&1; then
         echo -e "${Ok}"
@@ -133,6 +133,40 @@ install_nomadnet() {
         echo -e "${ErrBullet}Error installing nomadnet${Off}"
         exit 1
     fi
+}
+
+configure_rns() {
+    echo -e "${OkBullet}Select a transport to add, or finish editing"
+    PS3=":: Enter a number: "
+    options=("Default" "TCP" "UDP" "I2P" "LoRa" "Done")
+    select opt in "${options[@]}"; do
+        case $opt in
+        "Default")
+            break
+            ;;
+        "TCP")
+            echo "hello sir"
+            break
+            ;;
+        "UDP")
+            echo "hello udp"
+            break
+            ;;
+        "I2P")
+            echo "hello i2p"
+            break
+            ;;
+        "LoRa")
+            echo "hello lora"
+            break
+            ;;
+        *) echo "Invalid network choice!" ;;
+        esac
+    done
+}
+
+configure_nomadnet() {
+
 }
 
 install_i2pd() {
@@ -214,6 +248,7 @@ detect_root
 detect_pipe
 check_deps
 detect_pip3
-install_rnsd
+install_rns
 install_nomadnet
-detect_i2pd
+configure_rns
+configure_nomadnet
