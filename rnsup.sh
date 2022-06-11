@@ -136,6 +136,24 @@ install_nomadnet() {
 }
 
 configure_rns() {
+    if [-f "~/.reticulum/config"]; then
+        echo -ne "${OkBullet}Using existing rns config file..."
+    else
+        echo -ne "${OkBullet}Generating rns config file..."
+        ENABLE_TRANSPORT = no
+        while true; do
+            read -r -e -p "   Do you want to enable transport to route packets for other nodes on the network? [y/n]: " yn
+            case $yn in
+            [Yy]*)
+                ENABLE_TRANSPORT = yes
+                break
+                ;;
+            [Nn]*) break ;;
+            *) echo "   Please answer yes or no." ;;
+            esac
+        done
+        echo "[reticulum]\n   enable_transport = $ENABLE_TRANSPORT\n   share_instance = Yes\n   shared_instance_port = 37428\n   instance_control_port = 37429\n   panic_on_interface_error = No\n [logging]\n   loglevel = 4\n [interfaces]" >> ~/.reticulum/config
+    fi
     echo -e "${OkBullet}Select a transport to add, or exit:"
     PS3=":: Enter a number: "
     options=("Default" "TCP" "UDP" "I2P" "LoRa" "Exit")
