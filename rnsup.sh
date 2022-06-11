@@ -140,12 +140,12 @@ configure_rns() {
         echo -ne "${OkBullet}Using existing rns config file..."
     else
         echo -ne "${OkBullet}Generating rns config file..."
-        ENABLE_TRANSPORT = no
+        ENABLE_TRANSPORT=no
         while true; do
             read -r -e -p "   Do you want to enable transport to route packets for other nodes on the network? [y/n]: " yn
             case $yn in
             [Yy]*)
-                ENABLE_TRANSPORT = yes
+                ENABLE_TRANSPORT=yes
                 break
                 ;;
             [Nn]*) break ;;
