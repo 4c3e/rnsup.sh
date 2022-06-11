@@ -159,7 +159,7 @@ configure_rns() {
         chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.reticulum
         echo -e "${OkBullet}Successfully generated config file.${Off}"
     fi
-    
+    add_transport
 }
 
 add_transport() {
