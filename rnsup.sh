@@ -136,9 +136,9 @@ install_nomadnet() {
 }
 
 configure_rns() {
-    echo -e "${OkBullet}Select a transport to add, or finish editing"
+    echo -e "${OkBullet}Select a transport to add, or exit:"
     PS3=":: Enter a number: "
-    options=("Default" "TCP" "UDP" "I2P" "LoRa" "Done")
+    options=("Default" "TCP" "UDP" "I2P" "LoRa" "Exit")
     select opt in "${options[@]}"; do
         case $opt in
         "Default")
@@ -160,7 +160,7 @@ configure_rns() {
             echo "hello lora"
             break
             ;;
-        *) echo "Invalid network choice!" ;;
+        *) echo "Invalid choice!" ;;
         esac
     done
 }
