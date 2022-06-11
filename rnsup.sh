@@ -139,7 +139,7 @@ configure_rns() {
     if [ -f "~/.reticulum/config" ]; then
         echo -e "${OkBullet}Using existing rns config file${Off}"
     else
-        echo -e "${OkBullet}Generating rns config file...${Off}"
+        echo -e "${OkBullet}Generating rns config file..."
         ENABLE_TRANSPORT=no
         while true; do
             read -r -e -p "   Do you want to enable transport to route packets for other nodes on the network? [y/n]: " yn
@@ -152,7 +152,7 @@ configure_rns() {
             *) echo "   Please answer yes or no." ;;
             esac
         done
-        echo "[reticulum]\n   enable_transport = $ENABLE_TRANSPORT\n   share_instance = Yes\n   shared_instance_port = 37428\n   instance_control_port = 37429\n   panic_on_interface_error = No\n [logging]\n   loglevel = 4\n [interfaces]" > ~/.reticulum/config
+        echo "[reticulum]\n   enable_transport = $ENABLE_TRANSPORT\n   share_instance = Yes\n   shared_instance_port = 37428\n   instance_control_port = 37429\n   panic_on_interface_error = No\n [logging]\n   loglevel = 4\n [interfaces]" > /home/$SUDO_USER/.reticulum/config
         echo -e "${OkBullet}Successfully generated config file.${Off}"
     fi
     
