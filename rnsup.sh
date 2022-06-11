@@ -53,7 +53,7 @@ detect_root() {
     echo -ne "${OkBullet}Checking root... ${Off}"
     if [[ $EUID -ne 0 ]]; then
         echo -e "${Fail}"
-        echo -e "${ErrBullet}You need to run this script as root (UID=0).${Off}"
+        echo -e "${ErrBullet}You need to run this script as root (UID=0)${Off}"
         exit 1
     fi
     echo -e "${Ok}"
@@ -108,7 +108,7 @@ detect_pip3() {
         echo -e "${Ok}"
     else
         echo -e "${Nok}"
-        echo -e "${ErrBullet}Please install pip3 first.${Off}"
+        echo -e "${ErrBullet}Please install pip3 first${Off}"
         exit 1
     fi
 }
@@ -137,9 +137,9 @@ install_nomadnet() {
 
 configure_rns() {
     if [-f "~/.reticulum/config"]; then
-        echo -ne "${OkBullet}Using existing rns config file..."
+        echo -e "${OkBullet}Using existing rns config file${Off}"
     else
-        echo -ne "${OkBullet}Generating rns config file..."
+        echo -e "${OkBullet}Generating rns config file...${Off}"
         ENABLE_TRANSPORT=no
         while true; do
             read -r -e -p "   Do you want to enable transport to route packets for other nodes on the network? [y/n]: " yn
@@ -152,8 +152,13 @@ configure_rns() {
             *) echo "   Please answer yes or no." ;;
             esac
         done
-        echo "[reticulum]\n   enable_transport = $ENABLE_TRANSPORT\n   share_instance = Yes\n   shared_instance_port = 37428\n   instance_control_port = 37429\n   panic_on_interface_error = No\n [logging]\n   loglevel = 4\n [interfaces]" >> ~/.reticulum/config
+        echo "[reticulum]\n   enable_transport = $ENABLE_TRANSPORT\n   share_instance = Yes\n   shared_instance_port = 37428\n   instance_control_port = 37429\n   panic_on_interface_error = No\n [logging]\n   loglevel = 4\n [interfaces]" > ~/.reticulum/config
+        echo -e "${OkBullet}Successfully generated config file.${Off}"
     fi
+    
+}
+
+add_transport() {
     echo -e "${OkBullet}Select a transport to add, or exit:"
     PS3=":: Enter a number: "
     options=("Default" "TCP" "UDP" "I2P" "LoRa" "Exit")
@@ -161,27 +166,27 @@ configure_rns() {
         case $opt in
         "Default")
             echo "hello default"
-            configure_rns
+            add_transport
             break
             ;;
         "TCP")
             echo "hello tcp"
-            configure_rns
+            add_transport
             break
             ;;
         "UDP")
             echo "hello udp"
-            configure_rns
+            add_transport
             break
             ;;
         "I2P")
             echo "hello i2p"
-            configure_rns
+            add_transport
             break
             ;;
         "LoRa")
             echo "hello lora"
-            configure_rns
+            add_transport
             break
             ;;
         "Exit")
