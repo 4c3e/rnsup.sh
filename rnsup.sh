@@ -153,7 +153,7 @@ configure_rns() {
             esac
         done
         mkdir /home/$SUDO_USER/.reticulum
-        echo "[reticulum]\n   enable_transport = $ENABLE_TRANSPORT\n   share_instance = Yes\n   shared_instance_port = 37428\n   instance_control_port = 37429\n   panic_on_interface_error = No\n [logging]\n   loglevel = 4\n [interfaces]" > /home/$SUDO_USER/.reticulum/config
+        echo -e "[reticulum]\n   enable_transport = $ENABLE_TRANSPORT\n   share_instance = Yes\n   shared_instance_port = 37428\n   instance_control_port = 37429\n   panic_on_interface_error = No\n [logging]\n   loglevel = 4\n [interfaces]" > /home/$SUDO_USER/.reticulum/config
         echo -e "${OkBullet}Successfully generated config file.${Off}"
     fi
     
