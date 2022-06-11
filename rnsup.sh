@@ -137,31 +137,6 @@ install_nomadnet() {
     fi
 }
 
-configure_rns() {
-    if [ -f "~/.reticulum/config" ]; then
-        echo -e "${OkBullet}Using existing rns config file${Off}"
-    else
-        echo -e "${OkBullet}Generating rns config file..."
-        ENABLE_TRANSPORT=no
-        while true; do
-            read -r -e -p "   Do you want to enable transport to route packets for other nodes on the network? [y/n]: " yn
-            case $yn in
-            [Yy]*)
-                ENABLE_TRANSPORT=yes
-                break
-                ;;
-            [Nn]*) break ;;
-            *) echo "   Please answer yes or no." ;;
-            esac
-        done
-        mkdir /home/$SUDO_USER/.reticulum
-        echo -e "[reticulum]\n   enable_transport = $ENABLE_TRANSPORT\n   share_instance = Yes\n   shared_instance_port = 37428\n   instance_control_port = 37429\n   panic_on_interface_error = No\n [logging]\n   loglevel = 4\n [interfaces]" > /home/$SUDO_USER/.reticulum/config
-        chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.reticulum
-        echo -e "${OkBullet}Successfully generated config file.${Off}"
-    fi
-    add_transport
-}
-
 add_transport() {
     echo -e "${OkBullet}Select a transport to add, or exit:"
     PS3=":: Enter a number: "
@@ -202,20 +177,33 @@ add_transport() {
     done
 }
 
-configure_nomadnet() {
-    echo -e "${OkBullet}Configuring nomadnet... (sike)"
+configure_rns() {
+    if [ -f "~/.reticulum/config" ]; then
+        echo -e "${OkBullet}Using existing rns config file${Off}"
+    else
+        echo -e "${OkBullet}Generating rns config file..."
+        ENABLE_TRANSPORT=no
+        while true; do
+            read -r -e -p "   Do you want to enable transport to route packets for other nodes on the network? [y/n]: " yn
+            case $yn in
+            [Yy]*)
+                ENABLE_TRANSPORT=yes
+                break
+                ;;
+            [Nn]*) break ;;
+            *) echo "   Please answer yes or no." ;;
+            esac
+        done
+        mkdir /home/$SUDO_USER/.reticulum
+        echo -e "[reticulum]\n   enable_transport = $ENABLE_TRANSPORT\n   share_instance = Yes\n   shared_instance_port = 37428\n   instance_control_port = 37429\n   panic_on_interface_error = No\n [logging]\n   loglevel = 4\n [interfaces]" > /home/$SUDO_USER/.reticulum/config
+        chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.reticulum
+        echo -e "${OkBullet}Successfully generated config file.${Off}"
+    fi
+    add_transport
 }
 
-detect_i2pd() {
-    echo -ne "${OkBullet}Checking i2pd... ${Off}"
-    if i2pd --version >>"${RNSUP_LOG_FILE}" 2>&1; then
-        echo -e "${Ok}"
-    else
-        echo -e "${Nok}"
-        echo -ne "${OkBullet}Installing i2pd... ${Off}"
-        install_i2pd >>"${RNSUP_LOG_FILE}"
-        echo -e "${Ok}"
-    fi
+configure_nomadnet() {
+    echo -e "${OkBullet}Configuring nomadnet... (sike)"
 }
 
 ################################################################
@@ -286,6 +274,18 @@ configure_i2ptransport() {
     read -r -e -p "   Enter I2PTransport Name: " i2ptitlename
     read -r -e -p "   Enter I2PTransport Peers (comma seperated): " i2ppeerlist
     echo -e "[[$i2ptitlename]]\n  type = I2PInterface\n  interface_enabled = yes\n  peers = $i2ppeerlist" >> $RNS_CONF
+}
+
+detect_i2pd() {
+    echo -ne "${OkBullet}Checking i2pd... ${Off}"
+    if i2pd --version >>"${RNSUP_LOG_FILE}" 2>&1; then
+        echo -e "${Ok}"
+    else
+        echo -e "${Nok}"
+        echo -ne "${OkBullet}Installing i2pd... ${Off}"
+        install_i2pd >>"${RNSUP_LOG_FILE}"
+        echo -e "${Ok}"
+    fi
 }
 
 
