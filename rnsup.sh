@@ -33,6 +33,8 @@ RNSUP_INSTALL_CMD="sudo bash -c \"\$(curl  -sLSf https://paul.lc/rnsup.sh)\""
 RNSUP_DIR="/opt/rnsup.sh"
 RNSUP_LOG_FILE="/tmp/rnsup.sh-$(date +%Y%m%d-%H%M%S).log"
 DEPENDENCIES="python3-pip"
+RNS_DIR=/home/$SUDO_USER/.reticulum
+RNS_CONF=/home/$SUDO_USER/.reticulum/config
 
 ################################################################
 # Functions                                                    #
@@ -154,6 +156,7 @@ configure_rns() {
         done
         mkdir /home/$SUDO_USER/.reticulum
         echo -e "[reticulum]\n   enable_transport = $ENABLE_TRANSPORT\n   share_instance = Yes\n   shared_instance_port = 37428\n   instance_control_port = 37429\n   panic_on_interface_error = No\n [logging]\n   loglevel = 4\n [interfaces]" > /home/$SUDO_USER/.reticulum/config
+        chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.reticulum
         echo -e "${OkBullet}Successfully generated config file.${Off}"
     fi
     
@@ -181,7 +184,8 @@ add_transport() {
             break
             ;;
         "I2P")
-            echo "hello i2p"
+            detect_i2pd
+            configure_i2ptransport
             add_transport
             break
             ;;
@@ -202,8 +206,23 @@ configure_nomadnet() {
     echo -e "${OkBullet}Configuring nomadnet... (sike)"
 }
 
+detect_i2pd() {
+    echo -ne "${OkBullet}Checking i2pd... ${Off}"
+    if i2pd --version >>"${RNSUP_LOG_FILE}" 2>&1; then
+        echo -e "${Ok}"
+    else
+        echo -e "${Nok}"
+        echo -ne "${OkBullet}Installing i2pd... ${Off}"
+        install_i2pd >>"${RNSUP_LOG_FILE}"
+        echo -e "${Ok}"
+    fi
+}
+
+################################################################
+# i2pd install script: https://repo.i2pd.xyz/.help/add_repo    #
+################################################################
+
 install_i2pd() {
-    # Official i2pd install script
     source /etc/os-release
 
     function get_release {
@@ -263,17 +282,12 @@ install_i2pd() {
     apt-get install -y i2pd
 }
 
-detect_i2pd() {
-    echo -ne "${OkBullet}Checking i2pd... ${Off}"
-    if i2pd --version >>"${RNSUP_LOG_FILE}" 2>&1; then
-        echo -e "${Ok}"
-    else
-        echo -e "${Nok}"
-        echo -ne "${OkBullet}Installing i2pd... ${Off}"
-        install_i2pd >>"${RNSUP_LOG_FILE}"
-        echo -e "${Ok}"
-    fi
+configure_i2ptransport() {
+    read -r -e -p "   Enter I2PTransport Name: " i2ptitlename
+    read -r -e -p "   Enter I2PTransport Peers (comma seperated): " i2ppeerlist
+    echo -e "[[$i2ptitlename]]\n  type = I2PInterface\n  interface_enabled = yes\n  peers = $i2ppeerlist" >> $RNS_CONF
 }
+
 
 
 header
