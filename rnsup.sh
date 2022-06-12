@@ -164,10 +164,10 @@ query_rnodeconf() {
 
 }
 
-configure_i2ptransport() {
-    read -r -e -p "   Enter I2PTransport Name: " i2ptitlename
+configure_loratransport() {
+    read -r -e -p "   Enter I2PTransport Name: " loratitlename
     read -r -e -p "   Enter I2PTransport Peers (comma seperated): " i2ppeerlist
-    echo -e "[[$i2ptitlename]]\n  type = I2PInterface\n  interface_enabled = yes\n  peers = $i2ppeerlist" >> $RNS_CONF
+    echo -e "[[RNode LoRa Interface]]     type = RNodeInterface     interface_enabled = no     outgoing = true     port = /dev/ttyUSB0     frequency = 915000000     bandwidth = 500000     txpower = 7     spreadingfactor = 7     codingrate = 5     flow_control = False" >> $RNS_CONF
 }
 
 add_transport() {
