@@ -153,8 +153,8 @@ query_rnodeconf() {
 		read -r -e -p "   Would you like to configure a LoRa hardware device for use with rns? [y/n]: " yn
             case $yn in
             [Yy]*)
-		install_rnodeconf
-		rnodeconf -a
+                install_rnodeconf
+                rnodeconf -a
                 break
                 ;;
             [Nn]*) break ;;
@@ -171,43 +171,42 @@ configure_loratransport() {
 }
 
 add_transport() {
-    echo -e "${OkBullet}Select a transport to add, or exit:"
-    PS3=":: Enter a number: "
-    options=("Default" "TCP" "UDP" "I2P" "LoRa" "Exit")
-    select opt in "${options[@]}"; do
-        case $opt in
-        "Default")
-            echo "hello default"
-            add_transport
-            break
-            ;;
-        "TCP")
-            echo "hello tcp"
-            add_transport
-            break
-            ;;
-        "UDP")
-            echo "hello udp"
-            add_transport
-            break
-            ;;
-        "I2P")
-            detect_i2pd
-            configure_i2ptransport
-            add_transport
-            break
-            ;;
-        "LoRa")
-	    query_rnodeconf
-            add_transport
-	    configure_loratransport
-            break
-            ;;
-        "Exit")
-            break
-            ;;
-        *) echo "Invalid choice!" ;;
-        esac
+    ADD_TRANSPORT_FLAG=1
+    while ADD_TRANSPORT_FLAG; do
+        echo -e "${OkBullet}Select a transport to add, or exit:"
+        PS3=":: Enter a number: "
+        options=("Default" "TCP" "UDP" "I2P" "LoRa" "Exit")
+        select opt in "${options[@]}"; do
+            case $opt in
+            "Default")
+                echo "hello default"
+                break
+                ;;
+            "TCP")
+                echo "hello tcp"
+                break
+                ;;
+            "UDP")
+                echo "hello udp"
+                break
+                ;;
+            "I2P")
+                detect_i2pd
+                configure_i2ptransport
+                break
+                ;;
+            "LoRa")
+                query_rnodeconf
+                configure_loratransport
+                break
+                ;;
+            "Exit")
+                ADD_TRANSPORT_FLAG=0
+                break
+                ;;
+            *) echo "Invalid choice!" ;;
+            esac
+        done
     done
 }
 
