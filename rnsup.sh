@@ -172,7 +172,7 @@ configure_loratransport() {
 
 add_transport() {
     ADD_TRANSPORT_FLAG=1
-    while [ $ADD_TRANSPORT_FLAG -le 1 ]; do
+    while [ $ADD_TRANSPORT_FLAG -eq 1 ]; do
         echo -e "${OkBullet}Select a transport to add, or exit:"
         PS3=":: Enter a number: "
         options=("Default" "TCP" "UDP" "I2P" "LoRa" "Exit")
