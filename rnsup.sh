@@ -173,7 +173,7 @@ configure_loratransport() {
         select opt in "${options[@]}"; do
             case $opt in
             "US-900MHZ")
-		    echo -e "   [[RNode LoRa Interface]]\n     type = RNodeInterface\n     interface_enabled = no\n     outgoing = true\n     port = /dev/ttyUSB0\n     frequency = 915000000\n     bandwidth = 500000\n     txpower = 7\n     spreadingfactor = 7\n     codingrate = 5\n     flow_control = False\n" >> $RNS_CONF
+		    echo -e "   [[RNode LoRa Interface]]\n     type = RNodeInterface\n     interface_enabled = yes\n     outgoing = true\n     port = /dev/ttyUSB0\n     frequency = 915000000\n     bandwidth = 500000\n     txpower = 7\n     spreadingfactor = 7\n     codingrate = 5\n     flow_control = False\n" >> $RNS_CONF
                 break
                 ;;
             "EURO-400MHZ")
