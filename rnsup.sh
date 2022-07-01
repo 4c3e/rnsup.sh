@@ -29,7 +29,7 @@ StatInfo="${White}${On_Black}"
 # Vars                                                         #
 ################################################################
 VERSION="v0.1.0"
-RNSUP_INSTALL_CMD="sudo bash -c \"\$(curl  -sLSf https://paul.lc/rnsup.sh)\""
+RNSUP_INSTALL_CMD="sudo bash -c \"\$(curl  -sLSf https://get.reticulum.space)\""
 RNSUP_DIR="/opt/rnsup.sh"
 RNSUP_LOG_FILE="/tmp/rnsup.sh-$(date +%Y%m%d-%H%M%S).log"
 DEPENDENCIES="python3-pip"
@@ -181,7 +181,7 @@ configure_loratransport() {
                 break
                 ;;
             "Exit")
-                ADD_TRANSPORT_FLAG=0
+                CONF_TRANSPORT_FLAG=0
                 break
                 ;;
             *) echo "Invalid choice!" ;;
