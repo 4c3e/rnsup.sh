@@ -165,9 +165,29 @@ query_rnodeconf() {
 }
 
 configure_loratransport() {
-    read -r -e -p "   Enter I2PTransport Name: " loratitlename
-    read -r -e -p "   Enter I2PTransport Peers (comma seperated): " i2ppeerlist
-    echo -e "[[RNode LoRa Interface]]     type = RNodeInterface     interface_enabled = no     outgoing = true     port = /dev/ttyUSB0     frequency = 915000000     bandwidth = 500000     txpower = 7     spreadingfactor = 7     codingrate = 5     flow_control = False" >> $RNS_CONF
+    CONF_TRANSPORT_FLAG=1
+    while [ $CONF_TRANSPORT_FLAG -eq 1 ]; do
+        echo -e "${OkBullet}Select a LoRa Config to add, or exit:"
+        PS3=":: Enter a number: "
+        options=("US-900MHZ" "EURO-400MHZ" "Custom" "Exit")
+        select opt in "${options[@]}"; do
+            case $opt in
+            "US-900MHZ")
+		    echo -e "[[RNode LoRa Interface]]     type = RNodeInterface     interface_enabled = no     outgoing = true     port = /dev/ttyUSB0     frequency = 915000000     bandwidth = 500000     txpower = 7     spreadingfactor = 7     codingrate = 5     flow_control = False" >> $RNS_CONF
+                break
+                ;;
+            "EURO-400MHZ")
+		    echo "ERROR: Not configured yet!"
+                break
+                ;;
+            "Exit")
+                ADD_TRANSPORT_FLAG=0
+                break
+                ;;
+            *) echo "Invalid choice!" ;;
+            esac
+        done
+    done
 }
 
 add_transport() {
